@@ -6,9 +6,10 @@
     <a href="{{ route('admin.paket.create') }}" class="btn btn-primary">Buat Paket</a>
 </div>
 @include('partials.alerts')
+@include('partials.filters')
 <div class="card"><div class="card-body">
-<table class="table table-hover"><thead><tr><th>#</th><th>Gambar</th><th>Nama Paket</th><th>Keberangkatan</th><th>Harga</th><th>Seat</th><th>Aksi</th></tr></thead><tbody>
-@foreach(App\Models\Paket::with('hotels')->paginate(15) as $p)
+<table class="table table-hover"><thead><tr><th>No.</th><th>Gambar</th><th>Nama Paket</th><th>Keberangkatan</th><th>Harga</th><th>Seat</th><th>Aksi</th></tr></thead><tbody>
+@foreach($pakets as $p)
 <tr>
 <td>{{ $p->id_paket }}</td>
 <td>
@@ -28,6 +29,6 @@
 </tr>
 @endforeach
 </tbody></table>
-{{ App\Models\Paket::paginate(15)->links() }}
+{{ $pakets->links() }}
 </div></div>
 @endsection

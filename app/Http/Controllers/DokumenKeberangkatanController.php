@@ -9,10 +9,21 @@ class DokumenKeberangkatanController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response()->json(DokumenKeberangkatan::all());
+        $query = DokumenKeberangkatan::with('jemaah');
+        if ($request->filled('q')) {
+            $query->where('jenis_dokumen', 'like', '%'.$request->q.'%');
         }
-        return view('admin.dokumen.index');
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', $request->to);
+        }
+        if ($request->wantsJson()) {
+            return response()->json($query->get());
+        }
+        $dokumens = $query->paginate(15)->appends($request->only(['q','from','to']));
+        return view('admin.dokumen.index', compact('dokumens'));
     }
 
     public function create()

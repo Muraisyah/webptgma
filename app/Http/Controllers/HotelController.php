@@ -9,10 +9,21 @@ class HotelController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response()->json(Hotel::all());
+        $query = Hotel::query();
+        if ($request->filled('q')) {
+            $query->where('nama_hotel', 'like', '%'.$request->q.'%');
         }
-        return view('admin.hotel.index');
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', $request->to);
+        }
+        if ($request->wantsJson()) {
+            return response()->json($query->get());
+        }
+        $hotels = $query->paginate(15)->appends($request->only(['q','from','to']));
+        return view('admin.hotel.index', compact('hotels'));
     }
 
     public function create()
@@ -28,13 +39,10 @@ class HotelController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama_hotel' => 'required|string',
-            'alamat_hotel' => 'nullable|string',
+            'nama_hotel' => 'required|string|max:50',
+            'kota' => 'required|string|max:30',
+            'kategori_hotel' => 'nullable|string|max:15',
         ]);
-        if ($request->hasFile('foto_hotel')) {
-            $path = $request->file('foto_hotel')->store('uploads','public');
-            $data['foto_hotel'] = '/storage/'.$path;
-        }
         $hotel = Hotel::create($data);
         return redirect()->route('admin.hotel.index')->with('success','Hotel dibuat.');
     }
@@ -49,13 +57,10 @@ class HotelController extends Controller
     {
         $hotel = Hotel::findOrFail($id);
         $data = $request->validate([
-            'nama_hotel' => 'required|string',
-            'alamat_hotel' => 'nullable|string',
+            'nama_hotel' => 'required|string|max:50',
+            'kota' => 'required|string|max:30',
+            'kategori_hotel' => 'nullable|string|max:15',
         ]);
-        if ($request->hasFile('foto_hotel')) {
-            $path = $request->file('foto_hotel')->store('uploads','public');
-            $data['foto_hotel'] = '/storage/'.$path;
-        }
         $hotel->update($data);
         return redirect()->route('admin.hotel.index')->with('success','Hotel diperbarui.');
     }
