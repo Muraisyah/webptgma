@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@extends('layouts.app')
 @section('title','Detail Paket')
 @section('content')
 <div class="row">
@@ -19,7 +18,7 @@
 
                 @if($paket->foto_paket)
                     <div class="mb-3 text-center">
-                        <img src="{{ asset(ltrim($paket->foto_paket,'/')) }}" class="img-fluid rounded" style="max-height:420px;object-fit:cover;width:100%" alt="{{ $paket->nama_paket }}" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'640\\' height=\\'360\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23f6f6f6\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%23888\\' font-size=\\'24\\'>No Image</text></svg>'">
+                        <img src="{{ asset(ltrim($paket->foto_paket,'/')) }}" class="img-fluid rounded" style="max-height:420px;object-fit:cover;width:100%" alt="{{ $paket->nama_paket }}" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;640&quot; height=&quot;360&quot;%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; fill=&quot;%23f6f6f6&quot;/%3E%3Ctext x=&quot;50%25&quot; y=&quot;50%25&quot; dominant-baseline=&quot;middle&quot; text-anchor=&quot;middle&quot; fill=&quot;%23888&quot; font-size=&quot;24&quot;%3ENo Image%3C/text%3E%3C/svg%3E';">
                     </div>
                 @endif
 

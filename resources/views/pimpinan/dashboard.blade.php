@@ -1,46 +1,108 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Pimpinan Dashboard</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-	<div class="container-fluid">
-		<a class="navbar-brand" href="#">Pimpinan Panel</a>
-		<div class="collapse navbar-collapse">
-			<ul class="navbar-nav ms-auto">
-				<li class="nav-item"><span class="nav-link">{{ auth()->user()->nama_lengkap ?? auth()->user()->username }}</span></li>
-				<li class="nav-item">
-					<form method="POST" action="/logout" class="d-inline">@csrf<button class="btn btn-sm btn-light">Logout</button></form>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
-<div class="container mt-4">
-	<div class="row">
-		<div class="col-md-3">
-			<div class="list-group">
-				<a href="/pimpinan/dashboard" class="list-group-item list-group-item-action active">Dashboard</a>
-				<a href="/pimpinan/laporan" class="list-group-item list-group-item-action">Laporan</a>
-				<a href="/pimpinan/reservasi" class="list-group-item list-group-item-action">Reservasi</a>
-				<a href="/pimpinan/transaksi" class="list-group-item list-group-item-action">Transaksi</a>
-			</div>
-		</div>
-		<div class="col-md-9">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Selamat datang</h3>
-					<p class="card-text">Anda masuk sebagai <strong>{{ auth()->user()->role }}</strong>.</p>
-					<p class="card-text">Gunakan menu di samping untuk melihat laporan dan status reservasi.</p>
-				</div>
-			</div>
-		</div>
-	</div>
+@extends('layouts.app')
+@section('title','Dashboard Pimpinan')
+@section('content')
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Dashboard Pimpinan</h2>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Data Jemaah</h5>
+          <p class="display-6">{{ $jemaahCount }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Passport</h5>
+          <p class="display-6">{{ $passportCount }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Vaksin</h5>
+          <p class="display-6">{{ $vaksinCount }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-secondary">
+        <div class="card-body">
+          <h5 class="card-title">Visa</h5>
+          <p class="display-6">{{ $visaCount }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h6>Total Transaksi</h6>
+          <p class="h4">{{ $transaksiCount ?? 0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h6>Pendapatan Hari Ini</h6>
+          <p class="h4">Rp {{ number_format($pendapatanHari ?? 0,0,',','.') }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h6>Pendapatan Bulan Ini</h6>
+          <p class="h4">Rp {{ number_format($pendapatanBulan ?? 0,0,',','.') }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h6>Pendapatan Tahun Ini</h6>
+          <p class="h4">Rp {{ number_format($pendapatanTahun ?? 0,0,',','.') }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Recent Jemaah</div>
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>NIK</th>
+            <th>Passport</th>
+            <th>Visa</th>
+            <th>Vaksin</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($recentJemaah as $i => $j)
+            <tr>
+              <td>{{ $i+1 }}</td>
+              <td><a href="{{ route('admin.data-jemaah.show', $j->id_jemaah) }}">{{ $j->nama_jemaah }}</a></td>
+              <td>{{ $j->nik }}</td>
+              <td>{{ $j->passport->nomor_passport ?? '-' }}</td>
+              <td>{{ $j->visa->nomor_visa ?? '-' }}</td>
+              <td>{{ $j->vaksin->nama_vaksin ?? '-' }}</td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection

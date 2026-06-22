@@ -10,10 +10,21 @@ class PaketController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response()->json(Paket::with('hotels')->get());
+        $query = Paket::with('hotels');
+        if ($request->filled('q')) {
+            $query->where('nama_paket', 'like', '%'.$request->q.'%');
         }
-        return view('admin.paket.index');
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', $request->to);
+        }
+        if ($request->wantsJson()) {
+            return response()->json($query->get());
+        }
+        $pakets = $query->paginate(15)->appends($request->only(['q','from','to']));
+        return view('admin.paket.index', compact('pakets'));
     }
 
     public function create()

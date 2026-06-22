@@ -9,10 +9,21 @@ class TransaksiController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response()->json(Transaksi::with(['reservasi','rekening','admin'])->get());
+        $query = Transaksi::with(['reservasi','rekening','admin']);
+        if ($request->filled('q')) {
+            $query->where('kode_transaksi', 'like', '%'.$request->q.'%');
         }
-        return view('admin.transaksi.index');
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', $request->to);
+        }
+        if ($request->wantsJson()) {
+            return response()->json($query->get());
+        }
+        $transaksis = $query->paginate(15)->appends($request->only(['q','from','to']));
+        return view('admin.transaksi.index', compact('transaksis'));
     }
 
     public function create()

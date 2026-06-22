@@ -9,10 +9,21 @@ class RekeningController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
-            return response()->json(Rekening::all());
+        $query = Rekening::query();
+        if ($request->filled('q')) {
+            $query->where('nama_bank', 'like', '%'.$request->q.'%')->orWhere('nomor_rekening','like','%'.$request->q.'%');
         }
-        return view('admin.rekening.index');
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', $request->from);
+        }
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', $request->to);
+        }
+        if ($request->wantsJson()) {
+            return response()->json($query->get());
+        }
+        $rekenings = $query->paginate(15)->appends($request->only(['q','from','to']));
+        return view('admin.rekening.index', compact('rekenings'));
     }
 
     public function create()

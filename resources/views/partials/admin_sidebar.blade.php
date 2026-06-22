@@ -6,7 +6,7 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item"><a href="/admin/dashboard" class="nav-link link-dark {{ request()->is('admin/dashboard*') ? 'active' : '' }}">Dashboard</a></li>
-        <li class="nav-item"><a href="/admin/users" class="nav-link link-dark {{ request()->is('admin/users*') ? 'active' : '' }}">Pengguna</a></li>
+        <li class="nav-item"><a href="/admin/users" class="nav-link link-dark {{ request()->is('admin/users*') ? 'active' : '' }}">Akun Pengguna</a></li>
         <li class="nav-item"><a href="/admin/paket" class="nav-link link-dark {{ request()->is('admin/paket*') ? 'active' : '' }}">Paket</a></li>
         <li class="nav-item"><a href="/admin/hotel" class="nav-link link-dark {{ request()->is('admin/hotel*') ? 'active' : '' }}">Hotel</a></li>
         <li class="nav-item"><a href="/admin/reservasi" class="nav-link link-dark {{ request()->is('admin/reservasi*') ? 'active' : '' }}">Reservasi</a></li>
@@ -18,6 +18,6 @@
     </ul>
     <hr>
     <div class="mt-auto">
-        <small class="text-muted">Logged as: {{ auth()->user()->username ?? auth()->user()->nama_lengkap }}</small>
+        <small class="text-muted">Logged as: {{ optional(auth()->user())->nama_lengkap ?? optional(auth()->user())->username ?? 'Guest' }}</small>
     </div>
 </div>
