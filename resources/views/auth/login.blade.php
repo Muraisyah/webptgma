@@ -5,14 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
       body{background:#f8f9fa}
       /* Theme primary for standalone login page */
       .btn-primary{background:#782f6a;border-color:#782f6a;color:#fff}
       .btn-primary:hover{background:#5e2352;border-color:#5e2352}
+      
+      /* Navbar style */
+      .navbar-custom {
+          background: rgba(120, 47, 106, 0.95);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          padding: 10px 0;
+      }
+      
+      .navbar-custom .navbar-brand {
+          color: #fff !important;
+          font-weight: 600;
+          font-size: 1.2rem;
+      }
+      
+      .navbar-custom .navbar-brand i {
+          margin-right: 8px;
+      }
+      
+      .navbar-custom .nav-link {
+          color: rgba(255,255,255,0.9) !important;
+          transition: all 0.3s ease;
+          font-weight: 500;
+      }
+      
+      .navbar-custom .nav-link:hover {
+          color: #fff !important;
+          transform: translateY(-2px);
+      }
+      
+      .navbar-custom .nav-link i {
+          margin-right: 6px;
+      }
+      
+      /* Adjust main content to account for fixed navbar */
+      .container-fluid {
+          padding-top: 70px;
+      }
+      
+      /* Home button animation */
+      .home-btn {
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 8px;
+          padding: 8px 16px;
+          transition: all 0.3s ease;
+          color: #fff;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+      
+      .home-btn:hover {
+          background: rgba(255,255,255,0.25);
+          transform: translateY(-2px);
+          color: #fff;
+      }
     </style>
 </head>
 <body>
+<!-- Menu Navigasi Kembali ke Home -->
+<nav class="navbar navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('home') }}">
+            <i class="bi bi-house-fill"></i>
+            Al-Mukaromah
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="{{ route('home') }}" class="home-btn">
+                <i class="bi bi-arrow-left-circle-fill"></i>
+                Kembali ke Home
+            </a>
+            <span class="text-white-50">|</span>
+            <a href="#" class="text-white text-decoration-none opacity-75 hover-opacity-100" style="font-size:14px;">
+                <i class="bi bi-question-circle"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
 <div class="container-fluid vh-100 d-flex align-items-center p-0">
   <div class="row w-100 m-0">
     <div class="col-12 col-md-6 d-flex align-items-center justify-content-center" style="background:#f8f9fa;">
@@ -66,6 +150,7 @@
     </div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
